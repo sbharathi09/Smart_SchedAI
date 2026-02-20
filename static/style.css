@@ -34,28 +34,10 @@ body {
 }
 
 .container:hover {
-  transform: scale(1.01);
+  transform: scale(1.00);
 
 }  
-/*glass sffect*/
-/*
-.container {
-  max-width: 900px;
-  max-height: 300x;
-  margin: 40px auto;
-  background: #fff;
-  backdrop-filter: blur(10px); 
-  border-radius: 15px; 
-  padding: 20px;
-  color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); 
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-  .container:hover {
-  transform: scale(1.01);
 
-}  
-*/
 /* Header */
 header {
   text-align: center;
