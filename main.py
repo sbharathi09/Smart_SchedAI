@@ -275,7 +275,12 @@ def generate_weekly_timetables_from_inputs(sections, rooms, lab_names, subjects,
                     week[d][i] = "Revision/Practice"
 
     return results
-
+def clear_timetable_history():
+    conn = sqlite3.connect(DB)
+    c = conn.cursor()
+    c.execute("DELETE FROM timetables")
+    conn.commit()
+    conn.close()
 # ----- TEMPLATES (same class names so existing styles work) -----
 home_html = """
 <!doctype html>
@@ -344,6 +349,7 @@ result_html = """
 <body>
 <div class="container">
   <button class="home"><a href="/">HOME</a></button>
+  
   <h1 align="center">Generated Timetables</h1>
   <p class="small">Created at: {{ created }}</p>
 
@@ -430,7 +436,15 @@ recent_html = """
 <body>
 <div class="container">
   <button class="home"><a href="/">HOME</a></button>
-  <h1 align="center">Recent Timetables (last {{ items|length }})</h1>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+
+<h1 style="margin:0;">Recent Timetables (last {{ items|length }})</h1>
+
+<a href="/clear_history">
+<button class="mbutton" style="background:#c62828;">Clear History</button>
+</a>
+
+</div>
   {% if items %}
     {% for it in items %}
       <div class="cards">
@@ -737,7 +751,10 @@ def room_availability():
         available_rooms = [r for r in rooms if r not in used]
         available = {"used": sorted(list(used)), "available": available_rooms}
     return render_template_string(room_html, days=DAYS, periods=7, available=available)
-
+@app.route("/clear_history")
+def clear_history():
+    clear_timetable_history()
+    return redirect(url_for("recent"))
 if __name__ == "__main__":
     app.run(debug=True)
 
